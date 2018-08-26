@@ -18,8 +18,3 @@ def remove_meaningless_args(args_dict):
         args_dict.items()
     )
     return dict(meaningful_items)
-
-
-def split_key_value(kv_pair):
-    kv = kv_pair.split("=")
-    return kv[0], kv[1]
