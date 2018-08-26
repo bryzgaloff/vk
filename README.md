@@ -1,8 +1,13 @@
 Простая обертка для [API ВКонтакте](https://vk.com/dev/manuals) (далее — Обертка) для Python 2&3, основано на [dimka665/vk](https://github.com/dimka665/vk).
 
+# Требования
+* [requests](https://pypi.org/project/requests/)
+
 # Пример использования
 ```bash
 $ git clone https://github.com/bryzgaloff/vk.git
+
+$ pip install requests
 
 $ python
 ```
@@ -17,7 +22,7 @@ $ python
 >>> api = API(
 ...     email='your.email@domain.org',
 ...     password='your_password',
-...     app_id='your_app_id'
+...     app_id='your_app_id',
 ... )
 
 # если нет ни того, ни другого, смотрите раздел FAQ

@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import time
 
 import requests
@@ -40,15 +38,14 @@ class Session(object):
 
         self.available_token_requests = max_token_requests
 
-    def request_access_token(self):
+    def _request_access_token(self):
         if not self.available_token_requests:
-            raise RuntimeError(
-                'Maximum access_token request retries has exceeded'
-            )
+            raise RuntimeError('Maximum token request retries has exceeded')
         assert self._email is not None and self._password is not None \
             and self._app_id is not None and self._scope is not None
         self._access_token = get_access_token(
-            self._email, self._password, self._app_id, self._scope)
+            self._email, self._password, self._app_id, self._scope
+        )
 
     def make_request(self, method_name, method_args):
         response = self.send_api_request(method_name, method_args)
@@ -65,14 +62,14 @@ class Session(object):
                 error = VkAPIError(error_data)
 
                 if error.is_access_token_incorrect():
-                    self.request_access_token()
+                    self._request_access_token()
                     return self.make_request(method_name, method_args)
 
                 else:
                     raise error
 
     def send_api_request(self, method_name, explicit_method_args):
-        method_url = Session.API_URL + method_name
+        method_url = self.API_URL + method_name
 
         raw_method_args = self._default_method_args.copy()
         raw_method_args.update(explicit_method_args)
@@ -88,9 +85,6 @@ class Session(object):
             self.requests_till_cool_down = time.time() + 1
         self.requests_till_cool_down -= 1
 
-        response = self.requests_session.post(
-            method_url,
-            method_args,
-            timeout=self._timeout
-        )
+        response = self.requests_session \
+            .post(method_url, method_args, timeout=self._timeout)
         return response

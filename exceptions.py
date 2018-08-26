@@ -3,9 +3,9 @@ class VkException(Exception):
 
 
 class VkAPIError(VkException):
-    __slots__ = ['error', 'code', 'message', 'redirect_uri']
+    __slots__ = ('error', 'code', 'message', 'redirect_uri')
 
-    INVALID_REQUEST_CODE = 8
+    AUTHORIZATION_FAILED = 5
 
     def __init__(self, error_data):
         super(VkAPIError, self).__init__()
@@ -26,8 +26,7 @@ class VkAPIError(VkException):
         return request_params_dict
 
     def is_access_token_incorrect(self):
-        return self.code == VkAPIError.INVALID_REQUEST_CODE \
-               and 'access token' in self.message
+        return self.code == VkAPIError.AUTHORIZATION_FAILED
 
     def __str__(self):
         error_message = \

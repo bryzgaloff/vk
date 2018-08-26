@@ -2,9 +2,9 @@ from .session import Session
 
 
 class API(object):  # Singleton
-    instance = None
-    instance_args = None
-    instance_kwargs = None
+    _instance = None
+    _instance_args = None
+    _instance_kwargs = None
 
     class __API(object):
         def __init__(self, *args, **kwargs):
@@ -14,18 +14,18 @@ class API(object):  # Singleton
             return RequestChain(self.session, method_name)
 
     def __init__(self, *args, **kwargs):
-        if API.instance is None:
+        if API._instance is None:
             if not args and not kwargs:
                 RuntimeError('API instance is not initialized')
-            API.instance = API.__API(*args, **kwargs)
-            API.instance_args = args
-            API.instance_kwargs = kwargs
-        elif args and API.instance_args != args or \
-                kwargs and API.instance_kwargs != kwargs:
+            API._instance = API.__API(*args, **kwargs)
+            API._instance_args = args
+            API._instance_kwargs = kwargs
+        elif args and API._instance_args != args or \
+                kwargs and API._instance_kwargs != kwargs:
             RuntimeError('Only one API instance is available')
 
     def __getattr__(self, name):
-        return getattr(API.instance, name)
+        return getattr(API._instance, name)
 
 
 class RequestChain(object):
