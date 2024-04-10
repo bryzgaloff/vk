@@ -6,7 +6,7 @@ from .exceptions import VkAPIError
 from .utils import json_iter_parse, remove_meaningless_args
 from .auth import get_access_token
 
-DEFAULT_API_VERSION = '5.68'
+DEFAULT_API_VERSION = '5.81'
 
 
 class Session(object):
